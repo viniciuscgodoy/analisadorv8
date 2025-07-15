@@ -509,7 +509,7 @@ const AnimalWeightAnalyzer = () => {
       .map(record => ({
         ...record,
         parsedDate: parseDate(record.DATA || record.DATA_PESAGEM || record.data_pesagem || record.Data_Pesagem),
-        peso: record.PESO || record.peso || record.Peso
+        peso: parseFloat(record.PESO || record.peso || record.Peso || 0).toFixed(2) // Formata para 2 casas decimais
       }))
       .filter(record => record.parsedDate && !isNaN(record.peso))
       .sort((a, b) => a.parsedDate - b.parsedDate);
