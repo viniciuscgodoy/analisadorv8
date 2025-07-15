@@ -1128,7 +1128,7 @@ const AnimalWeightAnalyzer = () => {
                                       {animalHistory.map((record, index) => (
                                         <tr key={index} className="border-b border-green-100 hover:bg-green-50 transition-colors">
                                           <td className="p-3">{record.data}</td>
-                                          <td className="p-3 font-semibold">{record.peso}</td>
+                                      <td className="p-3 font-semibold">{parseFloat(record.peso).toFixed(2)} kg</td>
                                           <td className="p-3">
                                             <span className={`font-medium ${record.ganho_periodo >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                               {record.ganho_periodo > 0 ? '+' : ''}{record.ganho_periodo.toFixed(1)}
