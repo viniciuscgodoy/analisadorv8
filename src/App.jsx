@@ -186,7 +186,7 @@ const AnimalWeightAnalyzer = () => {
             animal: animalName,
             local: (lastRecord.LOCAL || lastRecord.local || lastRecord.Local || 'N/A').toString(),
             sexo: sexoNormalizado,
-            meses: lastRecord.MESES || lastRecord.meses || lastRecord.Meses || 0,
+            meses: parseFloat((lastRecord.MESES || lastRecord.meses || lastRecord.Meses || 0).toFixed(1)),
             ganho_diario: parseFloat(avgDailyGain.toFixed(4)),
             total_pesagens: sortedRecords.length,
             peso_inicial: sortedRecords[0].PESO || sortedRecords[0].peso || sortedRecords[0].Peso,
