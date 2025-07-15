@@ -497,31 +497,31 @@ const AnimalWeightAnalyzer = () => {
   const uniqueAnimals = processedData ? [...new Set(processedData.map(item => item.animal))].sort() : [];
 
   // Função para obter dados históricos de um animal específico
-  const getAnimalHistoryData = useCallback((animalName) => {
-    if (!data || animalName === 'all') return [];
-    
-    const animalRecords = data.filter(row => {
-      const animal = row.ANIMAL || row.animal || row.Animal;
-      return animal && animal.toString().trim() === animalName;
-    });
+ const getAnimalHistoryData = useCallback((animalName) => {
+  if (!data || animalName === 'all') return [];
+  
+  const animalRecords = data.filter(row => {
+    const animal = row.ANIMAL || row.animal || row.Animal;
+    return animal && animal.toString().trim() === animalName;
+  });
 
-    const sortedRecords = animalRecords
-      .map(record => ({
-        ...record,
-        parsedDate: parseDate(record.DATA || record.DATA_PESAGEM || record.data_pesagem || record.Data_Pesagem),
-        peso: parseFloat(record.PESO || record.peso || record.Peso || 0).toFixed(2) // Formata para 2 casas decimais
-      }))
-      .filter(record => record.parsedDate && !isNaN(record.peso))
-      .sort((a, b) => a.parsedDate - b.parsedDate);
+  const sortedRecords = animalRecords
+    .map(record => ({
+      ...record,
+      parsedDate: parseDate(record.DATA || record.DATA_PESAGEM || record.data_pesagem || record.Data_Pesagem),
+      peso: parseFloat(record.PESO || record.peso || record.Peso || 0).toFixed(2) // Formata para 2 casas decimais
+    }))
+    .filter(record => record.parsedDate && !isNaN(record.peso))
+    .sort((a, b) => a.parsedDate - b.parsedDate);
 
-    return sortedRecords.map((record, index) => ({
-      data: record.parsedDate.toLocaleDateString('pt-BR'),
-      peso: record.peso,
-      ganho_acumulado: index > 0 ? record.peso - sortedRecords[0].peso : 0,
-      ganho_periodo: index > 0 ? record.peso - sortedRecords[index - 1].peso : 0,
-      dias_desde_inicio: index > 0 ? Math.round((record.parsedDate - sortedRecords[0].parsedDate) / (1000 * 60 * 60 * 24)) : 0
-    }));
-  }, [data]);
+  return sortedRecords.map((record, index) => ({
+    data: record.parsedDate.toLocaleDateString('pt-BR'),
+    peso: parseFloat(record.peso), // Garante que é um número
+    ganho_acumulado: index > 0 ? parseFloat((record.peso - sortedRecords[0].peso).toFixed(2)) : 0,
+    ganho_periodo: index > 0 ? parseFloat((record.peso - sortedRecords[index - 1].peso).toFixed(2)) : 0,
+    dias_desde_inicio: index > 0 ? Math.round((record.parsedDate - sortedRecords[0].parsedDate) / (1000 * 60 * 60 * 24)) : 0
+  }));
+}, [data]);
 
   const { data: scatterData, media } = getScatterData();
   const filteredData = getFilteredData();
